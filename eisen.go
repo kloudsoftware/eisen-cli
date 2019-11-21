@@ -99,16 +99,16 @@ func main() {
 			err = os.Chdir(strings.ToLower(componentName))
 			check(err)
 
-			component := []byte(`import { Component, VApp, ComponentBuildFunc, Props, VNode, src, cssClass } from "@kloudsoftware/eisen"
+			component := []byte(`import {Component, ComponentProps, cssClass, Props, VNode} from "@kloudsoftware/eisen"
 
 export class ` + componentName + ` extends Component {
-    build(app: VApp): ComponentBuildFunc {
-        return (root: VNode, props: Props) => {
-            return {
-                mounted: () => {
-                }
-            };
-        }
+    lifeCycle(): ComponentProps {
+        return {};
+    }
+
+    render(props: Props): VNode {
+        const root = this.app.k("div");
+        return root;
     }
 }`)
 
@@ -141,7 +141,7 @@ export class ` + componentName + ` extends Component {
   "author": "",
   "license": "ISC",
     "dependencies": {
-    "@kloudsoftware/eisen": "^1.0.30",
+    "@kloudsoftware/eisen": "^2.0.1",
     "postcss": "^7.0.18",
     "tailwindcss": "^1.1.2"
   },
@@ -278,21 +278,25 @@ router.resolveRoute(document.location.pathname).catch(() => router.resolveRoute(
 				check(err)
 			}
 
-			component := []byte(`import { Component, VApp, ComponentBuildFunc, Props, VNode, src, cssClass } from "@kloudsoftware/eisen"
+			component := []byte(`import {Component, ComponentProps, cssClass, Props, VNode} from "@kloudsoftware/eisen"
 
-export class ` + componentName + ` extends Component {
-    build(app: VApp): ComponentBuildFunc {
-        return (root: VNode, props: Props) => {
-            const div = app.k("div", { attrs: [cssClass("contentDiv")] }, [
-                app.k("h1", { value: "Hello, eisen!" }),
-            ]);
-            
-            root.appendChild(div);
-            return {
-            };
-        }
+export class HelloEisen extends Component {
+
+    lifeCycle(): ComponentProps {
+        return {};
     }
-}`)
+
+    render(props: Props): VNode {
+        const root = this.app.k("div");
+        const div = this.app.k("div", {attrs: [cssClass("contentDiv")]}, [
+            this.app.k("h1", {value: "Hello, eisen!"}),
+        ]);
+
+        root.appendChild(div);
+        return root;
+    }
+}
+`)
 
 			err = ioutil.WriteFile("components/"+strings.ToLower(componentName)+"/"+componentName+".ts", component, 0644)
 			check(err)
