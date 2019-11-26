@@ -141,7 +141,7 @@ export class ` + componentName + ` extends Component {
   "author": "",
   "license": "ISC",
     "dependencies": {
-    "@kloudsoftware/eisen": "^2.0.1",
+    "@kloudsoftware/eisen": "^2.1.1",
     "postcss": "^7.0.18",
     "tailwindcss": "^1.1.2"
   },
